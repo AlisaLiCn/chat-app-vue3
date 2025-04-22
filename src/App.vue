@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const msg = ref('Hello World!')
+const msg = ref('!')
 </script>
 
 <template>
-  <div></div>
+  <div>{{ msg }}</div>
 </template>
 
 <style scoped></style>

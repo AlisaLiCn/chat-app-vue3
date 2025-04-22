@@ -72,7 +72,7 @@ export default [
     plugins: { vue: pluginVue, '@typescript-eslint': pluginTypeScript },
     processor: pluginVue.processors['.vue'],
     rules: {
-      ...pluginVue.configs.recommended.rules, // Vue 推荐规则
+      ...pluginVue.configs['vue3-recommended'].rules, // Vue3 推荐规则
       'vue/no-v-html': 'off' // 允许 v-html
     }
   }
