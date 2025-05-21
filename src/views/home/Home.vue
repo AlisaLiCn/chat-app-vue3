@@ -39,9 +39,14 @@ const sendMessage = async () => {
     // 处理流式响应
     await new Promise((resolve, reject) => {
       abortController = new AbortController()
-      streamChat(inputText, content => {
-        // 实时更新助手消息内容
-        currentAnswer.value += content
+      streamChat(inputText, data => {
+        console.log('res content:', data)
+        if (data.done) {
+          messages.value.push({ role: 'assistant', content: currentAnswer.value })
+          currentAnswer.value = ''
+        } else {
+          currentAnswer.value += data.content
+        }
       })
     })
   } catch (error) {

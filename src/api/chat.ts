@@ -5,6 +5,6 @@ export const getChatMessage = (data: any) => {
   return createStream({
     url: '/api/paas/v4/chat/completions',
     data,
-    method: 'POST',
+    method: 'POST'
   })
 }

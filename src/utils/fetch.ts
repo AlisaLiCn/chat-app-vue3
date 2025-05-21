@@ -11,7 +11,7 @@ export const createStream = async (options: Options) => {
   const response = await fetch(url, {
     method,
     headers: {
-      'Authorization': `Bearer ${apiKey}`,
+      Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
