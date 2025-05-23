@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DrawerProps } from 'element-plus'
+import { BubbleList, Sender } from 'vue-element-plus-x'
 import { streamChat } from '@/services/chat'
 
 defineOptions({
@@ -9,10 +9,9 @@ defineOptions({
 interface MessageItem {
   role: 'user' | 'assistant'
   content: string
+  isMarkdown?: boolean
 }
 
-const drawer = ref(false)
-const direction = ref<DrawerProps['direction']>('ltr')
 const userInput = ref('')
 const messages = ref<MessageItem[]>([])
 const currentAnswer = ref('')
@@ -22,8 +21,13 @@ let abortController: AbortController | null = null
 
 const msgList = computed(() => {
   if (!currentAnswer.value) return messages.value
-  const currentMsg = { role: 'assistant', content: currentAnswer.value }
+  const currentMsg = { role: 'assistant', content: currentAnswer.value, isMarkdown: true }
   return [...messages.value, currentMsg]
+})
+
+// 组件卸载时取消未完成的请求
+onUnmounted(() => {
+  abortController?.abort()
 })
 
 // 发送消息
@@ -42,8 +46,9 @@ const sendMessage = async () => {
       streamChat(inputText, data => {
         console.log('res content:', data)
         if (data.done) {
-          messages.value.push({ role: 'assistant', content: currentAnswer.value })
+          messages.value.push({ role: 'assistant', content: currentAnswer.value, isMarkdown: true })
           currentAnswer.value = ''
+          isLoading.value = false
         } else {
           currentAnswer.value += data.content
         }
@@ -58,32 +63,20 @@ const sendMessage = async () => {
   }
 }
 
-// 组件卸载时取消未完成的请求
-onUnmounted(() => {
-  abortController?.abort()
-})
+const handleCancel = () => {}
 </script>
 
 <template>
-  <div class="home-header">
-    <!-- <el-button type="primary" style="margin-left: 16px" @click="drawer = true"> open </el-button> -->
-  </div>
+  <div class="home-header"></div>
   <div class="chat-wrapper">
-    <div class="answer-wrapper">
-      <div v-for="message in msgList" :key="message.content">
-        <!-- <div>{{ message.role }}</div> -->
-        <div>{{ message.content }}</div>
-      </div>
-    </div>
-    <div class="input-wrapper">
-      <div>
-        <el-input v-model="userInput" style="width: 240px" :rows="2" type="textarea" placeholder="Please input" />
-      </div>
-      <el-button type="primary" @click="sendMessage">发送</el-button>
-    </div>
+    <BubbleList :list="msgList" max-height="350px" />
+    <Sender
+      ref="senderRef"
+      v-model="userInput"
+      :loading="isLoading"
+      clearable
+      @submit="sendMessage"
+      @cancel="handleCancel"
+    />
   </div>
-
-  <el-drawer v-model="drawer" title="I am the title" :direction="direction" :modal="false">
-    <div>chat history</div>
-  </el-drawer>
 </template>
