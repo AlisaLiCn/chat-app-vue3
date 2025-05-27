@@ -20,6 +20,10 @@ const isLoading = ref(false)
 
 let abortController: AbortController | null = null
 
+const bubbleMaxHeight = computed(() => {
+  return `calc(100vh - 56px - 86px)`
+})
+
 const msgList = computed(() => {
   if (!currentAnswer.value) return messages.value
   const currentMsg = { role: 'assistant', content: currentAnswer.value, isMarkdown: true }
@@ -72,7 +76,7 @@ const handleCancel = () => {}
     <div class="h-full flex flex-col justify-center items-center">
       <div class="h-[56px]"></div>
       <div class="w-[802px] flex-1 flex-grow h-full">
-        <BubbleList :list="msgList" />
+        <BubbleList :list="msgList" :max-height="bubbleMaxHeight" />
       </div>
       <div class="w-[802px] pb-[30px]">
         <Sender
