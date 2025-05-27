@@ -9,6 +9,7 @@ defineOptions({
 interface MessageItem {
   role: 'user' | 'assistant'
   content: string
+  placement?: 'start' | 'end'
   isMarkdown?: boolean
 }
 
@@ -35,7 +36,7 @@ const sendMessage = async () => {
   const inputText = userInput.value.trim()
   if (!inputText) return
 
-  messages.value.push({ role: 'user', content: inputText })
+  messages.value.push({ role: 'user', content: inputText, placement: 'end' })
   userInput.value = ''
   isLoading.value = true
 
@@ -67,16 +68,22 @@ const handleCancel = () => {}
 </script>
 
 <template>
-  <div class="home-header"></div>
-  <div class="chat-wrapper">
-    <BubbleList :list="msgList" max-height="350px" />
-    <Sender
-      ref="senderRef"
-      v-model="userInput"
-      :loading="isLoading"
-      clearable
-      @submit="sendMessage"
-      @cancel="handleCancel"
-    />
+  <div class="h-screen flex flex-col flex-1">
+    <div class="h-full flex flex-col justify-center items-center">
+      <div class="h-[56px]"></div>
+      <div class="w-[802px] flex-1 flex-grow h-full">
+        <BubbleList :list="msgList" />
+      </div>
+      <div class="w-[802px] pb-[30px]">
+        <Sender
+          ref="senderRef"
+          v-model="userInput"
+          :loading="isLoading"
+          clearable
+          @submit="sendMessage"
+          @cancel="handleCancel"
+        />
+      </div>
+    </div>
   </div>
 </template>
