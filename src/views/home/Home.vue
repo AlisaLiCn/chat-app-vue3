@@ -49,7 +49,6 @@ const sendMessage = async () => {
     await new Promise((resolve, reject) => {
       abortController = new AbortController()
       streamChat(inputText, data => {
-        console.log('res content:', data)
         if (data.done) {
           messages.value.push({ role: 'assistant', content: currentAnswer.value, isMarkdown: true })
           currentAnswer.value = ''
@@ -76,7 +75,7 @@ const handleCancel = () => {}
     <div class="h-full flex flex-col justify-center items-center">
       <div class="h-[56px]"></div>
       <div class="w-[802px] flex-1 flex-grow h-full">
-        <BubbleList :list="msgList" :max-height="bubbleMaxHeight" />
+        <BubbleList :list="msgList" :max-height="bubbleMaxHeight" :btnLoading="isLoading" />
       </div>
       <div class="w-[802px] pb-[30px]">
         <Sender
