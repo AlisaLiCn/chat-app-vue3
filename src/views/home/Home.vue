@@ -74,10 +74,10 @@ const handleCancel = () => {}
   <div class="h-screen flex flex-col flex-1">
     <div class="h-full flex flex-col justify-center items-center">
       <div class="h-[56px]"></div>
-      <div class="w-[802px] flex-1 flex-grow h-full">
+      <div class="chat-content flex-1 flex-grow h-full">
         <BubbleList :list="msgList" :max-height="bubbleMaxHeight" :btnLoading="isLoading" />
       </div>
-      <div class="w-[802px] pb-[30px]">
+      <div class="chat-content pb-[30px]">
         <Sender
           ref="senderRef"
           v-model="userInput"
@@ -90,3 +90,12 @@ const handleCancel = () => {}
     </div>
   </div>
 </template>
+
+<style>
+.chat-content {
+  --padding-side: calc(50vw - 401px);
+
+  width: 100%;
+  padding: 0 var(--padding-side);
+}
+</style>
