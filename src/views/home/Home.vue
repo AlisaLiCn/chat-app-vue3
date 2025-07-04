@@ -92,7 +92,7 @@ const sendMessage = async () => {
 
 const handleCancel = () => {}
 
-function handleConversationChange(item: ConversationItem<{ id: string; label: string }>) {
+function handleConversationChange(item: ConversationItem<{ id: number; label: string }>) {
   console.log('conversation changed', item)
 }
 </script>
