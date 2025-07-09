@@ -1,14 +1,28 @@
 <script setup lang="ts">
 import { Sender, Typewriter } from 'vue-element-plus-x'
+import { useUserStore } from '@/stores/modules/user'
+
+const router = useRouter()
+const userStore = useUserStore()
 
 const senderValue = ref('')
 const senderRef = ref()
 
 const welcomeMessage = computed(() => {
-  return '上午好，我是Chat AI ~'
+  return '你好，我是Chat AI ~'
 })
 
-async function handleSend() {}
+async function handleSend() {
+  if (!userStore.token) {
+    router.replace({
+      name: 'ChatWithId',
+      params: {
+        id: 'not_login'
+      }
+    })
+    return
+  }
+}
 </script>
 
 <template>

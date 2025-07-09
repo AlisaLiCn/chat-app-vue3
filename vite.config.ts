@@ -34,7 +34,8 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '^/api': {
           target: devBaseUrl,
-          changeOrigin: true
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api/, '')
         }
       }
     }
